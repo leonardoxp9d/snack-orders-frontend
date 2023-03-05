@@ -66,7 +66,13 @@ export default function Product({ categoryList }: CategoryProps) {
 
             await apiClient.post('/product', formData);
 
-            methods.reset();
+            methods.reset({
+                image: '',
+                category: '',
+                name: '',
+                price: '',
+                description: ''
+            });
 
             setLoading(false);
 
@@ -78,9 +84,10 @@ export default function Product({ categoryList }: CategoryProps) {
             
             if(errorMenssage){
                 toast.error(errorMenssage, { theme: "dark" });
+                return;
             }
 
-            console.log("Erro ao logar ", err);
+            console.log("Erro ao cadastrar produto ", err);
         }          
     }, [apiClient]);
 

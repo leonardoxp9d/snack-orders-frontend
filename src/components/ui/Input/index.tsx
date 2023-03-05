@@ -82,6 +82,7 @@ export function InputCurrency({ name, icon: Icon, placeholder, error }: InputPro
             <Controller
                 name={name}
                 control={control}
+                defaultValue="" 
                 render={({ field: { onChange, value } }) => (
                 <NumericFormat 
                     placeholder={placeholder}
@@ -94,6 +95,7 @@ export function InputCurrency({ name, icon: Icon, placeholder, error }: InputPro
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
                 />
+                
                 )}
             />
         </Container>
