@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components';
 import Tooltip from '../../Tooltip';
 
 interface ContainerProps {
-  isFocused?: boolean;
-  isFilled?: boolean;
-  isErrored?: boolean;
+  isFocused: boolean;
+  isFilled: boolean;
+  isErrored: boolean;
 }
 
 //export const Container = styled.div<ContainerProps>`
@@ -25,10 +25,16 @@ export const Container = styled(Tooltip)<ContainerProps>`
   select {
     flex-grow: 1;
     height: 38px;
-    color: var(--white);
+    color: #666360;
     background-color: #232129;
     padding: 0 0.7rem;
     border: 0;
+
+    /*
+    & option:checked {
+     color: red;
+    }*/ 
+  
   }
 
   ${props =>
@@ -56,7 +62,6 @@ export const Container = styled(Tooltip)<ContainerProps>`
     props.isFilled &&
     css`
       color: #ff9000;
-      //border-color: #ff9000;
 
   `}
 `;
@@ -64,11 +69,6 @@ export const Container = styled(Tooltip)<ContainerProps>`
 export const Error = styled(Tooltip)`
   height: 20px;
   margin-left: 16px;
-  //border: 1px blue solid ;
-
-  svg {
-    //margin: 0;
-  }
 
   span {
     background: #c53030;

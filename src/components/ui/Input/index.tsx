@@ -31,7 +31,7 @@ export function InputText({ name, icon: Icon, error, ...props}: InputProps ) {
     
     const handleInputBlur = useCallback(() => {
         setIsFocused(false);
-        setIsFilled(!!watch(name));
+        setIsFilled(!!watch(name).trim());
     }, []);
 
     return (
@@ -89,8 +89,9 @@ export function InputCurrency({ name, icon: Icon, placeholder, error }: InputPro
                     thousandSeparator="."
                     decimalSeparator=","
                     prefix={"R$ "}
+                    value={value}
                     onValueChange={(v) => {
-                    onChange(v.value);                    
+                        onChange(v.formattedValue);                    
                     }}
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
@@ -104,7 +105,7 @@ export function InputCurrency({ name, icon: Icon, placeholder, error }: InputPro
 };
 
 // ------------ InputImage ------------ 
-export function InputImage({name, error, ...props }: InputProps) {
+export function InputImage({name, icon: Icon, error, ...props }: InputProps) {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
@@ -142,7 +143,7 @@ export function InputImage({name, error, ...props }: InputProps) {
 
             <label>
                 <div>
-                    <FiUpload size={40}/>
+                    {Icon && <Icon size={50} />}
                 </div>
 
                 <input                 
@@ -155,7 +156,7 @@ export function InputImage({name, error, ...props }: InputProps) {
                 {imageUrl && (
                     <img
                         src={imageUrl}
-                        alt="Foto do produto"
+                        alt="Imagem do produto"
                         width={250}
                         height={250} 
                     />

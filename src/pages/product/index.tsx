@@ -1,15 +1,17 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Head from 'next/head';
 
 import { useForm, FormProvider } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FiUpload } from 'react-icons/fi';
+import { FiImage, FiTag, FiPackage, FiEdit } from 'react-icons/fi';
+import { BsCurrencyDollar } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
 import { setupAPIClient } from '../../services/api';
 import { canSSRAuth } from '../../utils/canSSRAuth';
-import styles from './styles.module.scss';
+
+import { Container } from  './styles';
 import { Header } from '../../components/Header';
 import { InputText, InputCurrency, InputImage } from '../../components/ui/Input';
 import { Select } from '../../components/ui/Select';
@@ -49,13 +51,15 @@ export default function Product({ categoryList }: CategoryProps) {
     const [loading, setLoading] = useState(false);
 
     const methods = useForm<ProductFormData>({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        shouldFocusError: false     
     });
+
 
     const handleRegister = useCallback(async (data: ProductFormData) => {
         try {
             setLoading(true);
-
+            
             const formData = new FormData();     
     
             formData.append('file', data.image[0]);
@@ -97,9 +101,9 @@ export default function Product({ categoryList }: CategoryProps) {
             <title>Novo Produto - Sujeito Pizzaria</title>
         </Head>
 
-        <div className={styles.container}>
+        <Container>
             <Header/>
-            <main className={styles.containerMain}>
+            <main>
                 <h1>Novo Produto</h1>
 
                 <FormProvider {...methods}>
@@ -107,41 +111,37 @@ export default function Product({ categoryList }: CategoryProps) {
                         <InputImage
                             name="image"
                             type="file"
-                            {...methods.register("image")}
-                            error={methods.formState.errors.image?.message}    
+                            icon={FiImage}
+                            error={methods.formState.errors.image?.message} 
                         />       
 
                         <Select
                             name="category"
-                            icon={FiUpload}
+                            icon={FiTag}
                             options={categoryList}
-                            {...methods.register("category")}
                             error={methods.formState.errors.category?.message}    
                         />
                     
                         <InputText
                             name="name"
                             type="text"
-                            icon={FiUpload}
-                            placeholder="Nome"
-                            {...methods.register("name")}
+                            icon={FiPackage}
+                            placeholder="Produto"
                             error={methods.formState.errors.name?.message}    
                         />
 
                         <InputCurrency
                             name="price"
                             type="text"
-                            icon={FiUpload}
+                            icon={BsCurrencyDollar}
                             placeholder="Preço"
-                            {...methods.register("price")}
                             error={methods.formState.errors.price?.message}    
                         />
 
                         <Textarea
-                            name="name"
-                            icon={FiUpload}
+                            name="description"
+                            icon={FiEdit}
                             placeholder="Descrição..."
-                            {...methods.register("description")}
                             error={methods.formState.errors.description?.message}    
                         />  
 
@@ -154,7 +154,7 @@ export default function Product({ categoryList }: CategoryProps) {
                     </form>
                 </FormProvider>
             </main>
-        </div>
+        </Container>
         </>
     );
 }

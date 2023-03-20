@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Head from 'next/head';
 import { toast } from 'react-toastify';
+import { FiTag } from 'react-icons/fi';
 
 import { setupAPIClient } from '../../services/api';
 import { canSSRAuth } from '../../utils/canSSRAuth';
@@ -25,7 +26,8 @@ const schema = yup.object().shape({
 export default function Category() {
     const [loading, setLoading] = useState(false);
     const methodsUseForm = useForm<CategoryFormData>({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(schema),
+        shouldFocusError: false
     });
 
     const handleRegister = useCallback(async (data: CategoryFormData) => {
@@ -76,6 +78,7 @@ export default function Category() {
                         <InputText
                             name="category"
                             type="text"
+                            icon={FiTag}
                             placeholder="Categoria" 
                             {...methodsUseForm.register("category")}
                             error={methodsUseForm.formState.errors.category?.message}    

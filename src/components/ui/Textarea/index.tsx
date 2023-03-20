@@ -12,7 +12,7 @@ import { Container } from './styles';
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
     name: string;
     icon?: ComponentType<IconBaseProps>;
-    error: any;
+    error: string;
 }
 
 export function Textarea({name, icon: Icon, error, ...props}: TextAreaProps) {

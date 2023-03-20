@@ -2,9 +2,7 @@ import { useContext } from 'react';
 import styles from './styles.module.scss';
 import Link from 'next/link';
 
-import { FiShoppingCart, FiTag, FiPower} from 'react-icons/fi';
-
-import { MdOutlineFastfood } from 'react-icons/md'
+import { FiShoppingCart, FiTag, FiPackage, FiPower} from 'react-icons/fi';
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -37,7 +35,7 @@ export function Header() {
                     
                     <Link legacyBehavior href="/product" >
                         <a>
-                            <MdOutlineFastfood className='svg' />
+                            <FiPackage className='svg' />
                             Novo Produto
                         </a>
                     </Link>    

@@ -29,6 +29,7 @@ export const Container = styled(Tooltip)<ContainerProps>`
     background: transparent;
     border: 0;
     color: #f4ede8;
+    width: 100%;
     
     &::placeholder {
         color: #666360;

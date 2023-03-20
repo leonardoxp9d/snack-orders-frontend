@@ -15,6 +15,8 @@ import logoImg from '../../../public/logo.svg';
 import { InputText } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button'
 import background from '../../../public/garcom3.jpeg';
+import  { Container } from '../../../styles/home.module';
+
 
 interface SignUpFormData{
   name: string;
@@ -32,7 +34,8 @@ export default function SignUp() {
   const { signUp } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const methodsUseForm = useForm<SignUpFormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    shouldFocusError: false
   });
 
   const handleSignUp = useCallback(async (data: SignUpFormData) => {
@@ -52,8 +55,8 @@ export default function SignUp() {
     <Head>
       <title>Faça seu cadastro agora!</title> 
     </Head>
-    <div className={styles.container}>
-      <div className={styles.login}>
+    <Container>
+      <div>
         <Image src={logoImg} alt="Logo Sujeito Pizzaria" />
         <h1>Cadastro</h1>
 
@@ -100,7 +103,7 @@ export default function SignUp() {
         </Link>
       </div>
       <Image src={background} className={styles.background}  alt="Imagem do Background" />   
-    </div>
+    </Container>
     </>
   )
 }

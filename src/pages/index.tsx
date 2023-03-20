@@ -16,6 +16,7 @@ import logoImg from '../../public/logo.svg';
 import background from '../../public/garcom3.jpeg';
 import { InputText } from '../components/ui/Input';
 import { Button } from '../components/ui/Button';
+import  { Container } from '../../styles/home.module';
 
 interface SignInFormData{
   email: string;
@@ -31,7 +32,8 @@ export default function Home() {
   const { signIn } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const methodsUseForm = useForm<SignInFormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    shouldFocusError: false
   });
 
   const handleLogin = useCallback(async (data: SignInFormData) => {
@@ -50,9 +52,9 @@ export default function Home() {
     <Head>
       <title>SujeitoPizza - Faça seu login</title>
     </Head>
-    <div className={styles.container}>
-
-      <div className={styles.login}>
+    
+    <Container>
+      <div>
         <Image src={logoImg} alt="Logo Sujeito Pizza" />
         <h1>Login</h1>
 
@@ -91,8 +93,7 @@ export default function Home() {
       </div>
 
       <Image src={background} className={styles.background}  alt="Imagem do Background" />      
-
-    </div>
+    </Container>
     </>
   )
 }

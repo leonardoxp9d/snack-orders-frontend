@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import Modal from 'react-modal';
 import { FiRefreshCcw } from 'react-icons/fi';
@@ -49,11 +49,11 @@ export default function Dashboard({ orders }: HomeProps){
   const[modalItem, setModalItem] = useState<OrderItemProps[]>();
   const[modalVisible, setModalVisible] = useState(false);
 
-  function handleCloseModal() {
+  const handleCloseModal = useCallback(() => {
     setModalVisible(false);
-  }
+  }, []);
 
-  async function handleOpenModalView(id: string) {
+  const handleOpenModal = useCallback(async (id: string) => {
     const apiClient = setupAPIClient();
 
     const response = await apiClient.get('/order/detail', {
@@ -63,10 +63,11 @@ export default function Dashboard({ orders }: HomeProps){
     });
 
     setModalItem(response.data);
-    setModalVisible(true);
-  }
 
-  async function handleFinishItem(id: string) {
+    setModalVisible(true);
+  }, []);
+
+  const handleFinishItem = useCallback(async (id: string) => {
     const apiClient = setupAPIClient();
 
     await apiClient.put('/order/finish', {
@@ -77,15 +78,15 @@ export default function Dashboard({ orders }: HomeProps){
 
     setOrderList(response.data);
     setModalVisible(false);
-  }
+  }, []);
 
-  async function handleRefreshOrders() {
+  const handleRefreshOrders = useCallback(async() => {
     const apiClient = setupAPIClient();
 
     const response = await apiClient.get('/orders');
     
     setOrderList(response.data);
-  }
+  }, [orderList]);
 
   useEffect(() => {
     const interval = setTimeout(() => {
@@ -95,7 +96,7 @@ export default function Dashboard({ orders }: HomeProps){
     return () => clearTimeout(interval);
   }, [handleRefreshOrders]);
 
-  Modal.setAppElement('#__next');
+  //Modal.setAppElement('#__next');
 
   return(
     <>
@@ -105,9 +106,7 @@ export default function Dashboard({ orders }: HomeProps){
 
     <div className={styles.container}>
       <Header/>
-
       <main className={styles.main}>
-
         <div className={styles.title}>
           <h1>Últimos Pedidos</h1>
           <button onClick={handleRefreshOrders}>
@@ -116,7 +115,6 @@ export default function Dashboard({ orders }: HomeProps){
         </div>
 
         <article className={styles.listOreders}>
-
           {orderList.length === 0 && (
             <span className={styles.emptyList}>
               Nenhum pedido aberto foi encontrado...
@@ -125,14 +123,13 @@ export default function Dashboard({ orders }: HomeProps){
 
           {orderList.map( item => (
             <section key={item.id} className={styles.orderItem} >
-              <button onClick={ () => handleOpenModalView(item.id) }>
+              <button onClick={ () => handleOpenModal(item.id) }>
                 <div></div>
                 <span>Mesa {item.table}</span>
               </button>
             </section>
           ))}     
         </article>
-
       </main>
 
       { modalVisible && (
@@ -143,7 +140,6 @@ export default function Dashboard({ orders }: HomeProps){
           handleFinishOrder={handleFinishItem}
         />
       )}
-
     </div>
     </>
   )

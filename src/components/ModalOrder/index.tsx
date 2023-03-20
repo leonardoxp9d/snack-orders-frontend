@@ -28,7 +28,6 @@ export function ModalOrder({ isOpen, onRequestClose, order, handleFinishOrder  }
   };
 
   return(
-
     <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
