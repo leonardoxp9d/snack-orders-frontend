@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import Tooltip from '../../Tooltip';
+import Tooltip from '../../../Tooltip';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -11,36 +11,55 @@ interface ContainerProps {
 export const Container = styled(Tooltip)<ContainerProps>`
   display: flex;
   align-items: center;
-  height: 4.5rem;
-  padding: 0 1rem;
-
   background-color: var(--inputs);
-  color: var(--gray-hard);
   border: .17rem solid var(--inputs);
-  border-radius: 1rem;
+  border-radius: 1rem; 
+  color: var(--gray-hard);
+  //border: 1px solid red;
 
-  
-  //margin-bottom: 5px;  
-
-  svg {
-    margin-right: .4rem;
-    font-size: 2rem;
-  }
-
-  select {
-    flex-grow: 1;
-    color: var(--gray-hard);
-    background-color: var(--inputs);
-    border: 0;
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 27rem;
     //border: 1px solid red;
+
+    div {
+      position: absolute;
+      opacity: 0.8;
+      transition: all 0.7s;
+      //border: 1px solid red;
+
+      svg {
+        font-size: 9rem;
+      }
+    }
     
-  } 
+    &:hover div {
+        opacity: 1;
+        transform: scale(1.2);
+        //border: 1px solid red;
+    }
+    
+    input {
+      flex: 1;
+      z-index: -10;
+    }  
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
+  }
 
   ${props =>
     props.isErrored &&
     css`
       border-color: var(--red);
-      
       span {
         background: var(--red);
         color: var(--white);
@@ -55,18 +74,11 @@ export const Container = styled(Tooltip)<ContainerProps>`
     css`
       color: var(--primary-color);
       border-color: var(--primary-color);
-
-      select {
-        color: var(--white);
-      }
   `}
 
   ${props =>
     props.isFilled &&
     css`
       color: var(--primary-color);
-      select {
-        color: var(--white);
-      }
   `}
 `;

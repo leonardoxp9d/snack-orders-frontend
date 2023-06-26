@@ -15,7 +15,7 @@ export function Button({ loading, children, ...props }: ButtonProps) {
             {...props}
         >
             { loading ? (
-                <FaSpinner color="#FFF" size={16} />
+                <FaSpinner/>
             ) : (
                 <a>
                     {children}

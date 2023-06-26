@@ -4,19 +4,23 @@ import Head from 'next/head';
 import { useForm, FormProvider } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { FiImage, FiTag, FiPackage, FiEdit } from 'react-icons/fi';
+import { FiImage, FiTag, FiBox, FiEdit } from 'react-icons/fi';
 import { BsCurrencyDollar } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 
 import { setupAPIClient } from '../../services/api';
 import { canSSRAuth } from '../../utils/canSSRAuth';
 
-import { Container } from  './styles';
+import { Container, Main, Title } from  './styles';
 import { Header } from '../../components/Header';
-import { InputText, InputCurrency, InputImage } from '../../components/ui/Input';
+import { InputText } from '../../components/ui/Input/InputText';
+import { InputCurrency } from '../../components/ui/Input/InputCurrency';
+import { InputImage } from '../../components/ui/Input/InputImage';
 import { Select } from '../../components/ui/Select';
 import { Textarea } from '../../components/ui/Textarea';
 import { Button } from '../../components/ui/Button';
+import firstLetterUpperCase from '../../utils/firstLetterUpperCase';
+
 
 type ItemProps = {
     id: string;
@@ -37,10 +41,10 @@ type ProductFormData = {
 
 const schema = yup.object().shape({
     image: yup.mixed()
-    .test('required', "Selecione uma imagem", (value) =>{
+    .test('required', "Imagem obrigatória", (value) =>{
         return value && value.length
     }),
-    category: yup.string().required('Selecione uma categoria'),
+    category: yup.string().required('Categoria obrigatória'),
     name: yup.string().trim().required('Nome obrigatório'),
     price: yup.string().required('Preço obrigatório'),  
     description: yup.string().trim().required('Descrição obrigatória'),
@@ -50,27 +54,30 @@ export default function Product({ categoryList }: CategoryProps) {
     const apiClient = setupAPIClient();
     const [loading, setLoading] = useState(false);
 
-    const methods = useForm<ProductFormData>({
+    const methodsForm = useForm<ProductFormData>({
         resolver: yupResolver(schema),
         shouldFocusError: false     
     });
 
-
-    const handleRegister = useCallback(async (data: ProductFormData) => {
+    const handleRegister = useCallback(async (product: ProductFormData) => {
         try {
             setLoading(true);
+
+            const productNameLowerCase = product.name.toLowerCase();
+            const productNameNoSpace = productNameLowerCase.trim();
+            const productNamefirstLetterUpperCase = firstLetterUpperCase(productNameNoSpace);
             
             const formData = new FormData();     
     
-            formData.append('file', data.image[0]);
-            formData.append('category_id', categoryList[data.category].id);
-            formData.append('name', data.name);
-            formData.append('price', data.price);
-            formData.append('description', data.description);
+            formData.append('file', product.image[0]);
+            formData.append('category_id', categoryList[product.category].id);
+            formData.append('name', productNamefirstLetterUpperCase);
+            formData.append('price', product.price);
+            formData.append('description', product.description);
 
             await apiClient.post('/product', formData);
 
-            methods.reset({
+            methodsForm.reset({
                 image: '',
                 category: '',
                 name: '',
@@ -103,31 +110,34 @@ export default function Product({ categoryList }: CategoryProps) {
 
         <Container>
             <Header/>
-            <main>
-                <h1>Novo Produto</h1>
+            <Main className='main'>
+                <Title>
+                    <FiBox/>
+                    <h1>Novo Produto</h1>
+                </Title>
 
-                <FormProvider {...methods}>
-                    <form onSubmit={methods.handleSubmit(handleRegister)}>
+                <FormProvider {...methodsForm}>
+                    <form onSubmit={methodsForm.handleSubmit(handleRegister)} className="clickElement">
                         <InputImage
                             name="image"
                             type="file"
                             icon={FiImage}
-                            error={methods.formState.errors.image?.message} 
+                            error={methodsForm.formState.errors.image?.message} 
                         />       
 
                         <Select
                             name="category"
                             icon={FiTag}
                             options={categoryList}
-                            error={methods.formState.errors.category?.message}    
+                            error={methodsForm.formState.errors.category?.message}    
                         />
                     
                         <InputText
                             name="name"
                             type="text"
-                            icon={FiPackage}
+                            icon={FiBox}
                             placeholder="Produto"
-                            error={methods.formState.errors.name?.message}    
+                            error={methodsForm.formState.errors.name?.message}    
                         />
 
                         <InputCurrency
@@ -135,14 +145,14 @@ export default function Product({ categoryList }: CategoryProps) {
                             type="text"
                             icon={BsCurrencyDollar}
                             placeholder="Preço"
-                            error={methods.formState.errors.price?.message}    
+                            error={methodsForm.formState.errors.price?.message}    
                         />
 
                         <Textarea
                             name="description"
                             icon={FiEdit}
                             placeholder="Descrição..."
-                            error={methods.formState.errors.description?.message}    
+                            error={methodsForm.formState.errors.description?.message}    
                         />  
 
                         <Button 
@@ -153,7 +163,7 @@ export default function Product({ categoryList }: CategoryProps) {
                         </Button>         
                     </form>
                 </FormProvider>
-            </main>
+            </Main>
         </Container>
         </>
     );

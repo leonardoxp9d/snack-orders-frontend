@@ -1,22 +1,21 @@
-import {
-    ComponentType,
-    TextareaHTMLAttributes,
+import React, {
+    InputHTMLAttributes,
     useState,
     useCallback,
 } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { IconBaseProps } from 'react-icons';
-
+import { useFormContext } from 'react-hook-form';
 import { Container } from './styles';
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string;
-    icon?: ComponentType<IconBaseProps>;
+    icon?: React.ComponentType<IconBaseProps>;
+    placeholder?: string;
     error: string;
 }
-
-export function Textarea({name, icon: Icon, error, ...props}: TextAreaProps) {
-
+    
+export function InputText({ name, icon: Icon, error, ...props}: InputProps ) {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(false);
     const { register, watch } = useFormContext();
@@ -31,22 +30,21 @@ export function Textarea({name, icon: Icon, error, ...props}: TextAreaProps) {
     }, []);
 
     return (
-
+        <>        
         <Container 
             isFocused={isFocused} 
             isFilled={isFilled} 
             isErrored={!!error}
             title={error}
         >
-            
-            {Icon && <Icon/>}
-            
-            <textarea
+            {Icon && <Icon/>} 
+            <input
                 {...register(name)}
                 onFocus={handleInputFocus}
                 {...props}
                 onBlur={handleInputBlur}
-            />     
+            />
         </Container>
+        </>
     );
 };

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    display: flex;
-    min-height: 100vh;
-    //border: 1px solid red;
+    display: flex;    
+    min-height: 100vh; 
+    //border: 1px solid red;    
 `
 
 export const Main = styled.main`
@@ -28,17 +28,14 @@ export const Title = styled.div`
     }
 
     svg {
-        margin-right: 1rem;
         fill: var(--primary-color);
-        stroke: var(--primary-color);
-        stroke-width: 3px;
+        color: var(--primary-color);
+        margin-right: 1rem;
 
         line {
             stroke: var(--background);
-        }
-
-        polyline {
-            stroke: var(--background);
+            stroke-width: 4px;
         }
     }
 `
+

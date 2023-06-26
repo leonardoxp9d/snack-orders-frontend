@@ -1,12 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
-import Modal from 'react-modal';
-import { FiRefreshCcw } from 'react-icons/fi';
+import { FiShoppingCart, FiRefreshCcw } from 'react-icons/fi';
 
 import { canSSRAuth } from '../../utils/canSSRAuth';
 import { setupAPIClient } from '../../services/api';
 
-import styles from './styles.module.scss';
+import { Container, Main, Title, ListOreders } from './styles'
 import { Header } from '../../components/Header';
 import { ModalOrder } from '../../components/ModalOrder';
 
@@ -48,7 +47,7 @@ export default function Dashboard({ orders }: HomeProps){
 
   const[modalItem, setModalItem] = useState<OrderItemProps[]>();
   const[modalVisible, setModalVisible] = useState(false);
-
+  
   const handleCloseModal = useCallback(() => {
     setModalVisible(false);
   }, []);
@@ -96,41 +95,41 @@ export default function Dashboard({ orders }: HomeProps){
     return () => clearTimeout(interval);
   }, [handleRefreshOrders]);
 
-  //Modal.setAppElement('#__next');
-
   return(
     <>
     <Head>
       <title>Painel - Sujeito Pizzaria</title>
     </Head>
 
-    <div className={styles.container}>
+    <Container>
       <Header/>
-      <main className={styles.main}>
-        <div className={styles.title}>
-          <h1>Últimos Pedidos</h1>
+      <Main className='main'>
+        <Title>
+          <FiShoppingCart/>
+          <h1>Pedidos</h1>
+          {/*
           <button onClick={handleRefreshOrders}>
-            <FiRefreshCcw size={25} color="#FF9000"/>
-          </button>
-        </div>
+            <FiRefreshCcw color="#FF9000"/>
+          </button> */}
+        </Title>
 
-        <article className={styles.listOreders}>
-          {orderList.length === 0 && (
-            <span className={styles.emptyList}>
-              Nenhum pedido aberto foi encontrado...
-            </span>
-          )}
-
+        <ListOreders className="clickElement">
           {orderList.map( item => (
-            <section key={item.id} className={styles.orderItem} >
-              <button onClick={ () => handleOpenModal(item.id) }>
+            <section key={item.id} >
+              <button onClick={ () => handleOpenModal(item.id)}>
                 <div></div>
                 <span>Mesa {item.table}</span>
               </button>
             </section>
-          ))}     
-        </article>
-      </main>
+          ))} 
+
+          {orderList.length === 0 && (
+            <span>
+              Nenhum pedido aberto foi encontrado...
+            </span>
+          )}    
+        </ListOreders>
+      </Main>
 
       { modalVisible && (
         <ModalOrder
@@ -140,7 +139,7 @@ export default function Dashboard({ orders }: HomeProps){
           handleFinishOrder={handleFinishItem}
         />
       )}
-    </div>
+    </Container>
     </>
   )
 }
@@ -149,7 +148,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiClient = setupAPIClient(ctx);
 
   const response = await apiClient.get('/orders');
-
+  
   return {
     props: {
       orders: response.data

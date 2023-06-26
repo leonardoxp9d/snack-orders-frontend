@@ -10,13 +10,11 @@ import { FiUser, FiMail, FiLock } from 'react-icons/fi';
 import { AuthContext } from '../../contexts/AuthContext';
 import { canSSRGuest } from '../../utils/canSSRGuest';
 
-import styles from '../../../styles/home.module.scss';
-import logoImg from '../../../public/logo.svg';
-import { InputText } from '../../components/ui/Input';
-import { Button } from '../../components/ui/Button'
-import background from '../../../public/garcom3.jpeg';
+import logo from '../../../public/logo.svg';
+import background from '../../../public/background.jpeg';
+import { InputText } from '../../components/ui/Input/InputText';
+import { Button } from '../../components/ui/Button';
 import  { Container } from '../../../styles/home.module';
-
 
 interface SignUpFormData{
   name: string;
@@ -57,7 +55,19 @@ export default function SignUp() {
     </Head>
     <Container>
       <div>
-        <Image src={logoImg} alt="Logo Sujeito Pizzaria" />
+        {/*
+        <picture>
+          <source srcSet='/logo-v1.svg' width={300} media="(max-width: 400px)" /> 
+          <source srcSet='/logo-v1.svg' width={400} media="(max-width: 950px)" /> 
+          <img src="/logo-v1.svg" width={350} alt="Logo Sujeito Pizza" /> 
+        </picture>
+        */}
+      
+        <img src="/logo.svg" alt="logo" /> 
+       
+        {/*<Image src="/logo.svg" alt="logo" width={400} height={100}  layout="responsive"/> */} 
+
+
         <h1>Cadastro</h1>
 
         <FormProvider {...methodsUseForm}>
@@ -98,11 +108,15 @@ export default function SignUp() {
           </form>
         </FormProvider>
 
-        <Link legacyBehavior href="/">
-           <a className={styles.text}>Já possui uma conta? Faça login!</a> 
+        <Link href="/">
+           Já possui uma conta? Faça login! 
         </Link>
       </div>
-      <Image src={background} className={styles.background}  alt="Imagem do Background" />   
+      
+      <img src="/background.jpeg" alt="Imagem do Background" />
+      {/*<Image src={background}  alt="Imagem do Background" />   */}
+      {/*<Image src="/garcom3.jpeg" width={1500} height={1500} alt="Imagem do Background" /> */} 
+
     </Container>
     </>
   )

@@ -41,7 +41,7 @@ export function Select({name, icon: Icon, options, error, ...props }: SelectProp
                 isErrored={!!error}
                 title={error}
             >
-                {Icon && <Icon size={20}/>}
+                {Icon && <Icon />}
 
                 <select 
                     {...register(name)}
@@ -49,7 +49,7 @@ export function Select({name, icon: Icon, options, error, ...props }: SelectProp
                     {...props}
                     onBlur={handleInputBlur}
                 >
-                    <option selected disabled hidden value="">
+                    <option selected disabled value="">
                         Categoria
                     </option>
                     {options.map( (item, index) => {

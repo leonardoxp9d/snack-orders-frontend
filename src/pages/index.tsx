@@ -3,22 +3,21 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Head from 'next/head';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
+
 import Link from 'next/link';
 import { FiMail, FiLock } from 'react-icons/fi';
-
 
 import { AuthContext } from '../contexts/AuthContext';
 import { canSSRGuest } from '../utils/canSSRGuest';
 
-import styles from '../../styles/home.module.scss';
-import logoImg from '../../public/logo.svg';
-import background from '../../public/garcom3.jpeg';
-import { InputText } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
+import logo from '../../public/logo.svg';
+import background from '../../public/background.jpeg';
 import  { Container } from '../../styles/home.module';
+import { InputText } from '../components/ui/Input/InputText';
+import { Button } from '../components/ui/Button';
 
-interface SignInFormData{
+interface SignInFormData {
   email: string;
   password: string;
 }
@@ -54,8 +53,15 @@ export default function Home() {
     </Head>
     
     <Container>
-      <div>
-        <Image src={logoImg} alt="Logo Sujeito Pizza" />
+      <div>     
+        <img src="/logo.svg" alt="logo" /> 
+
+       {/*
+       <Image src="/logo.svg"  alt="logo" width={400} height={200} layout='responsive'/>
+       <Logo src={logo} alt="logo" layout="responsive"/>
+       */}
+
+
         <h1>Login</h1>
 
         <FormProvider {...methodsUseForm}>
@@ -87,12 +93,15 @@ export default function Home() {
           </form>
         </FormProvider>
 
-        <Link legacyBehavior href="/signup">
-          <a className={styles.text}>Não possui uma conta? Cadastre-se</a>
+        <Link href="/signup">
+          Não possui uma conta? Cadastre-se
         </Link>
       </div>
 
-      <Image src={background} className={styles.background}  alt="Imagem do Background" />      
+      {/*<Image src={background} alt="Imagem do Background"/> */} 
+
+      <img src="/background.jpeg" alt="Imagem do Background" />
+
     </Container>
     </>
   )

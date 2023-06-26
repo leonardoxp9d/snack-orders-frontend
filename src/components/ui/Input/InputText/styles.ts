@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import Tooltip from '../../Tooltip';
+import Tooltip from '../../../Tooltip';
 
 interface ContainerProps {
   isFocused: boolean;
@@ -10,26 +10,28 @@ interface ContainerProps {
 
 export const Container = styled(Tooltip)<ContainerProps>`
   display: flex;
-  height: 12rem;
-  padding: 1rem;
+  align-items: center;
+  width: 100%;
+  height: 4.5rem;
+  padding: 0 1rem;  
   background-color: var(--inputs);
   border: .17rem solid var(--inputs);
   border-radius: 1rem;
   color: var(--gray-hard);
+  //border: 1px solid red;
 
   svg {
-    margin-right: .9rem;
-    font-size: 1.8rem;
+    margin-right: 1rem;
+    font-size: 2rem;
   }
 
-  textarea {
-    flex: 1;
-    width: 100%; 
+  input {
+    width: 100%;
     background: transparent;
-    color: var(--white);
-    resize: none;
     border: 0;
-    
+    color: var(--white);
+    //border: 1px solid red;
+
     &::placeholder {
       color: var(--gray-hard);
     }
@@ -60,6 +62,5 @@ export const Container = styled(Tooltip)<ContainerProps>`
     props.isFilled &&
     css`
       color: var(--primary-color);
-
   `}
 `;

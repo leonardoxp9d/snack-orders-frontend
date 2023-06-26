@@ -1,5 +1,5 @@
 import Modal from 'react-modal';
-import styles from './styles.module.scss';
+import { Container, ButtonClose, ButtonFinish, ListItem } from './styles';
 
 import { FiX } from 'react-icons/fi';
 
@@ -14,55 +14,56 @@ interface ModalOrderProps {
 
 export function ModalOrder({ isOpen, onRequestClose, order, handleFinishOrder  }: ModalOrderProps){
 
-  const customStyles = {
+  const modalStyle = {
     content:{
       top: '50%',
+      right: 'auto',
       bottom: 'auto',
       left: '50%',
-      right: 'auto',
-      padding: '30px',
       transform: 'translate(-50%, -50%)',
-      backgroundColor: '#312E38',
-      borderRadius: '10px', 
+      //margin: '5px',
+      maxWidth:'60rem',
+      width: '90%',
+      padding: '3.5rem',
+      backgroundColor: 'var(--background)',
+      borderRadius: '1rem',
     }
   };
 
   return(
     <Modal
-        isOpen={isOpen}
-        onRequestClose={onRequestClose}
-        style={customStyles}
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      style={modalStyle}
     >
-          <button
-              type="button"
-              onClick={onRequestClose}
-              className={styles.buttonClose} 
-          >
-              <FiX size={30} color="#ff9000" />
-          </button>
-        
 
-        <div className={styles.container}>
+        <Container>
+          <ButtonClose
+            type="button"
+            onClick={onRequestClose}
+          >
+            <FiX/>
+          </ButtonClose>
+
           <h2>Detalhes do pedido</h2>
-          <span className={styles.table}>
-              Mesa: <strong>{order[0].order.table}</strong>
+
+          <span>
+              Mesa: {order[0].order.table}
           </span>
 
           {order.map( item => (
-              <section key={item.id} className={styles.item}>
-                <span>{item.amount} - <strong>{item.product.name}</strong></span>
-                <span className={styles.description}>{item.product.description}</span>
-              </section>
+              <ListItem key={item.id} >
+                <span>{item.amount} - {item.product.name}</span>
+                <span>{item.product.description}</span>
+              </ListItem>
           ))}     
 
-          
-          <button 
-            className={styles.buttonFinish} 
+          <ButtonFinish 
             onClick={ () => handleFinishOrder(order[0].order_id) }
           >
             Finalizar pedido
-          </button>
-        </div>
+          </ButtonFinish>
+        </Container>
     </Modal>
   )
 }

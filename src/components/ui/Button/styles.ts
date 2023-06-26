@@ -1,32 +1,24 @@
 import styled from 'styled-components';
 
 export const Container = styled.button`
-  background-color: #ff9000;
-  border: 0;
-
-  height: 40px;
   width: 100%;
-  border-radius: 0.3rem;
-  padding: 0.4rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  height: 4.5rem;
+  background-color: var(--primary-color);
+  color: var(--background);
+  font-weight: 700;
+  border: 0; 
+  border-radius: 1rem;
+  transition: filter .3s ease-in-out;
   
-  transition: filter 0.3s ease-in-out;
+  &:hover {
+    filter: brightness(0.7);
+  }
 
   &[disabled] {
     cursor: not-allowed;
     svg {
         animation: animate 2s infinite;
     }
-  }
-
-  &:hover {
-    filter: brightness(0.7);
-  }
-
-  a {
-    color: #312e38;
-    font-weight: 550;
   }
 
   @keyframes animate {

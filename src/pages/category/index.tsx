@@ -9,32 +9,32 @@ import { FiTag } from 'react-icons/fi';
 import { setupAPIClient } from '../../services/api';
 import { canSSRAuth } from '../../utils/canSSRAuth';
 
-import styles from './styles.module.scss';
+import { Container, Title, Main } from './styles';
 import { Header } from '../../components/Header';
-import  { InputText }  from '../../components/ui/Input';
+import  { InputText }  from '../../components/ui/Input/InputText';
 import { Button } from '../../components/ui/Button';
 import firstLetterUpperCase from '../../utils/firstLetterUpperCase';
 
 interface CategoryFormData{
-    category: string;
+    name: string;
 }
 
 const schema = yup.object().shape({
-    category: yup.string().trim().required('Categoria obrigatória'),
+    name: yup.string().trim().required('Categoria obrigatória'),
 });
 
 export default function Category() {
     const [loading, setLoading] = useState(false);
-    const methodsUseForm = useForm<CategoryFormData>({
+    const  methodsForm = useForm<CategoryFormData>({
         resolver: yupResolver(schema),
         shouldFocusError: false
     });
 
-    const handleRegister = useCallback(async (data: CategoryFormData) => {
+    const handleRegister = useCallback(async (category: CategoryFormData) => {
         try {
             setLoading(true);
             
-            const categoryNameLowerCase = data.category.toLowerCase();
+            const categoryNameLowerCase = category.name.toLowerCase();
             const categoryNameNoSpace = categoryNameLowerCase.trim();
             const categoryNamefirstLetterUpperCase = firstLetterUpperCase(categoryNameNoSpace);
 
@@ -43,7 +43,7 @@ export default function Category() {
                 name: categoryNamefirstLetterUpperCase
             });
 
-            methodsUseForm.reset();
+             methodsForm.reset();
 
             setLoading(false);
 
@@ -67,21 +67,22 @@ export default function Category() {
         <Head>
             <title>Nova Categoria - Sujeito Pizzaria</title>
         </Head>
-        <div className={styles.container}>
+        <Container>
             <Header/>
-
-            <main className={styles.main}>
-                <h1>Nova Categoria</h1>
-
-                <FormProvider {...methodsUseForm}>
-                    <form onSubmit={methodsUseForm.handleSubmit(handleRegister)}>
+            <Main className='main'>
+                <Title>
+                    <FiTag/>
+                    <h1>Nova Categoria</h1>
+                </Title>
+                <FormProvider {... methodsForm}>
+                    <form onSubmit={ methodsForm.handleSubmit(handleRegister)} className="clickElement">
                         <InputText
-                            name="category"
+                            name="name"
                             type="text"
                             icon={FiTag}
                             placeholder="Categoria" 
-                            {...methodsUseForm.register("category")}
-                            error={methodsUseForm.formState.errors.category?.message}    
+                            {... methodsForm.register("name")}
+                            error={ methodsForm.formState.errors.name?.message}    
                         />
 
                         <Button 
@@ -92,8 +93,8 @@ export default function Category() {
                         </Button>
                     </form>    
                 </FormProvider>            
-            </main>
-        </div>
+            </Main>
+        </Container>
         </>
     );
 }
