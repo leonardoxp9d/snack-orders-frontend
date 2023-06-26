@@ -47,6 +47,23 @@ export default function Dashboard({ orders }: HomeProps){
 
   const[modalItem, setModalItem] = useState<OrderItemProps[]>();
   const[modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    const eventSource = new EventSource('http://localhost:3000/orders');
+    
+    eventSource.onmessage = function (event) {
+      const orders = JSON.parse(event.data);
+      setOrderList(orders);
+    };
+
+    eventSource.onerror = function (error) {
+      console.error('Erro no evento SSE:', error);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
   
   const handleCloseModal = useCallback(() => {
     setModalVisible(false);
@@ -79,6 +96,7 @@ export default function Dashboard({ orders }: HomeProps){
     setModalVisible(false);
   }, []);
 
+  /*
   const handleRefreshOrders = useCallback(async() => {
     const apiClient = setupAPIClient();
 
@@ -86,7 +104,9 @@ export default function Dashboard({ orders }: HomeProps){
     
     setOrderList(response.data);
   }, [orderList]);
+  */
 
+  /*
   useEffect(() => {
     const interval = setTimeout(() => {
       handleRefreshOrders();
@@ -94,6 +114,7 @@ export default function Dashboard({ orders }: HomeProps){
     
     return () => clearTimeout(interval);
   }, [handleRefreshOrders]);
+  */
 
   return(
     <>
@@ -145,13 +166,15 @@ export default function Dashboard({ orders }: HomeProps){
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
+  /*
   const apiClient = setupAPIClient(ctx);
 
   const response = await apiClient.get('/orders');
+  */
   
   return {
     props: {
-      orders: response.data
+      //orders: response.data
     }
   }
 });
